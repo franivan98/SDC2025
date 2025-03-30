@@ -1,0 +1,9 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 33.69      8.84     8.84        1     8.84    17.52  func1
+ 33.08     17.52     8.68        1     8.68     8.68  func2
+ 33.08     26.20     8.68        1     8.68     8.68  new_func1
+  0.15     26.24     0.04                             main
