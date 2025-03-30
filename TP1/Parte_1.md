@@ -32,6 +32,22 @@ Se centra en proyectos de software afines a la carrera, haciendo uso de interacc
 
 ### Benchmarks mas utiles para este perfil:
 
+* **STREAM**: mide el ancho de banda en memoria, lo cual impacta en compilaciones de codigo y en juegos que carguen grandes volumenes de datos en ram.
 
+* **FIO**: Util para evaluar el rendimiento del disco, lo cual impacta en tiempo de carga de juego y compilaciones.
+
+* **SPEC CPU**: Evalua el rendimiento general del sistema en carga de trabajo reales
+
+* **Imbench**: Mide latencias de memoria, ancho de banda, y el rendimiento de las llamadas del sistema.
+
+| **Tarea**                               | **Benchmark más representativo**     | **Motivo** |
+|-----------------------------------------|-------------------------------------|------------|
+| Compilar código                         | Build Linux Kernel / SPEC CPU      | Evalúa rendimiento de CPU y memoria en compilaciones. |
+| Ejecutar código ensamblador en SO       | lmbench                            | Mide latencias de llamadas al sistema y acceso a memoria. |
+| Cargar archivos grandes en el sistema   | FIO                                | Evalúa rendimiento de lectura/escritura en disco. |
+| Probar multitarea en el SO              | lmbench                            | Mide rendimiento en operaciones de concurrencia y multitarea. |
+| Jugar videojuegos                       | STREAM / FIO                       | STREAM evalúa el rendimiento de la memoria y FIO el acceso a disco, claves en juegos. |
+| Procesar datos en memoria               | STREAM                             | Evalúa el ancho de banda de memoria. |
+| Ejecutar procesos en paralelo           | lmbench                            | Analiza la latencia de creación de procesos y cambios de contexto. |
 
 
