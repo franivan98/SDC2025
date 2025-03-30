@@ -38,7 +38,7 @@ Se centra en proyectos de software afines a la carrera, haciendo uso de interacc
 
 * **SPEC CPU**: Evalua el rendimiento general del sistema en carga de trabajo reales
 
-* **Imbench**: Mide latencias de memoria, ancho de banda, y el rendimiento de las llamadas del sistema.
+* **lmbench**: Mide latencias de memoria, ancho de banda, y el rendimiento de las llamadas del sistema.
 
 | **Tarea**                               | **Benchmark más representativo**     | **Motivo** |
 |-----------------------------------------|-------------------------------------|------------|
@@ -49,5 +49,3 @@ Se centra en proyectos de software afines a la carrera, haciendo uso de interacc
 | Jugar videojuegos                       | STREAM / FIO                       | STREAM evalúa el rendimiento de la memoria y FIO el acceso a disco, claves en juegos. |
 | Procesar datos en memoria               | STREAM                             | Evalúa el ancho de banda de memoria. |
 | Ejecutar procesos en paralelo           | lmbench                            | Analiza la latencia de creación de procesos y cambios de contexto. |
-
-
