@@ -44,15 +44,14 @@ Tiempo transcurrido (Segundos): 3.32
 ## Calculos de Speedup y eficiencia
 Con los datos obtenidos, podemos realizar el calculo de speedup y eficiencia en cada uno de los casos, tomando de base la velocidad a 80 Mhz.
 
-| Frecuencia (MHz) | Speedup (Enteros) | Eficiencia (Enteros) | Speedup (Flotantes) | Eficiencia (Flotantes) |
-|------------------|------------------|----------------------|--------------------|----------------------|
-| 80              | 1.000             | 1.000                | 1.000               | 1.000                |
-| 160             | 2.012             | 1.006                | 2.012               | 1.006                |
-| 240             | 3.021             | 1.007                | 3.018               | 1.006                |
-
+| Frecuencia (MHz) | Speedup (Enteros) | Speedup (Flotantes) |
+|------------------|------------------|--------------------|
+| 80              | 1.000             | 1.000             |
+| 160             | 2.012             | 2.012             |
+| 240             | 3.021             | 3.018             |
 ## Conclusiones
 
-El rendimiento de la ESP32 escala casi linealmente con la frecuencia, con una eficiencia ligeramente superior al 100%. Esto sugiere que el aumento de frecuencia no solo reduce el tiempo de ejecución, sino que también puede mejorar la utilización del procesador, posiblemente debido a factores como:  
+El rendimiento de la ESP32 escala casi linealmente. Esto sugiere que el aumento de frecuencia no solo reduce el tiempo de ejecución, sino que también puede mejorar la utilización del procesador, posiblemente debido a factores como:  
 - Mejor aprovechamiento de caché.
 - Menor impacto de latencias fijas. 
 
