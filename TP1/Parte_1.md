@@ -105,7 +105,7 @@ Se centra en proyectos de software vinculados a la carrera, incluyendo interacci
 A continuación se presentan los resultados obtenidos al medir el tiempo de compilación del kernel de Linux 6.8 (configuración `defconfig`). Los datos fueron extraídos de [OpenBenchmarking.org](https://openbenchmarking.org/test/pts/build-linux-kernel-1.15.0) en marzo de 2025.
 
 #### Imagen de Referencia
-![Resultados de Compilación del Kernel](images/AMD_vs_INTEL.png)  
+![Resultados de Compilación del Kernel](images/AMD_vs_INTEL.PNG)  
 *Descripción de la imagen: Gráfico comparativo que muestra los tiempos de compilación en segundos para ambos procesadores.*
 
 #### Resultados Clave:
@@ -116,7 +116,7 @@ A continuación se presentan los resultados obtenidos al medir el tiempo de comp
 ## ¿Y el **AMD Ryzen 9 7950X 16-Core**?
 
 #### Imagen de Referencia
-![Resultados de Compilación del Kernel](images/AMD-Ryzen-9-7950X-16-Core.png)  
+![Resultados de Compilación del Kernel](images/AMD-Ryzen-9-7950X-16-Core.PGN)  
 *Descripción de la imagen: Tabla con el tiempo de compilación del Ryzen 9 7950X.*
 
 #### Datos del Nuevo Procesador:
