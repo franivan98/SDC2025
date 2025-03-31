@@ -112,12 +112,8 @@ A continuación se presentan los resultados obtenidos al medir el tiempo de comp
 - **Intel Core i5-13600K**: 83 segundos.  
 - **AMD Ryzen 9 5900X 12-Core**: 97 segundos.  
 
-**Interpretación:**  
-El procesador Intel es **16.8% más rápido** que el AMD Ryzen 9 5900X en esta tarea S = 97/83 = 1.168 
 
----
-
-## ¿Cuál es la aceleración al usar un **AMD Ryzen 9 7950X 16-Core**?
+## ¿Y el **AMD Ryzen 9 7950X 16-Core**?
 
 #### Imagen de Referencia
 ![Resultados de Compilación del Kernel](images/AMD-Ryzen-9-7950X-16-Core.png)  
@@ -126,7 +122,24 @@ El procesador Intel es **16.8% más rápido** que el AMD Ryzen 9 5900X en esta t
 #### Datos del Nuevo Procesador:
 - **AMD Ryzen 9 7950X 16-Core**: 55.15 segundos.  
 
-#### Cálculo de Aceleración:
+---
+
+## Comparativa de Procesadores
+| Procesador          | Precio (USD) | Tiempo (s) | Rendimiento (1/s) | Eficiencia/Costo (Speedup/Costo) | Eficiencia/Prod (Speedup/CPUs) | Speedup | CPUs |
+|---------------------|--------------|------------|--------------------|-----------------------------------|--------------------------------|---------|------|
+| Intel i5-13600K     | 421          | 83 ± 1     | 0.012              | 0.0028                            | 0.083                         | 1.16x   | 14   |
+| AMD Ryzen 9 5900X   | 365          | 97 ± 1     | 0.010              | 0.0027                            | 0.083                         | 1.00x   | 12   |
+| AMD Ryzen 9 7950X   | 601          | 55.5 ± 0.5 | 0.018              | 0.0029                            | 0.110                         | 1.76x   | 16   |
+
+*Precio: MercadoLibre.com*   -  *Tiempos: openbenchmarking.org* 
+### ¿Cuál es el rendimiento de estos procesadores para compilar el kernel de Linux?
+
+#### Resultados Clave:
+- **Intel Core i5-13600K**: 83 segundos (**16% más rápido** que el AMD 5900X).
+- **AMD Ryzen 9 5900X**: 97 segundos (base de comparación).
+- **AMD Ryzen 9 7950X**: 55.5 segundos (**76% más rápido** que el AMD 5900X y **50% más rápido** que el Intel).
+
+## ¿Cual es la aceleración cuando usamos un AMD Ryzen 9 7950X 16-Core?
 1. **Comparación con el Ryzen 9 5900X 12-Core**:
 
 Aceleración (S) = Tiempo(5900X) / Tiempo(7950X) = 97 / 55.15 = 1.76x (76% más rápido).
@@ -135,12 +148,19 @@ Aceleración (S) = Tiempo(5900X) / Tiempo(7950X) = 97 / 55.15 = 1.76x (76% más 
 
 Aceleración (S) = Tiempo(i5-13600K) / Tiempo(7950X) = 83 / 55.15 = 1.51x (51% más rápido).
 
----
 
-## Conclusiones y Relevancia Práctica
- **Aceleración Significativa**:  
-   - El **AMD Ryzen 9 7950X** ofrece una mejora sustancial frente a sus predecesores y competidores, reduciendo el tiempo de compilación en un 43% frente al Ryzen 5900X y un 33% frente al Intel i5-13600K.  
-   - Esto impacta directamente en productividad para tareas intensivas como desarrollo de software, CI/CD, o optimización de sistemas operativos.
----
+## Conclusiones
+1. **Rendimiento Bruto**:  
+   - El **AMD Ryzen 9 7950X** es el más rápido, reduciendo el tiempo de compilación en un **43%** frente al Ryzen 5900X y un **33%** frente al Intel i5-13600K.  
 
-**Nota:** Los tiempos pueden variar según configuración de hardware adicional (RAM, disco NVMe) y versión del compilador.  
+2. **Eficiencia/Costo**:  
+   - El **AMD 5900X** ofrece la mejor relación costo-eficiencia (\( 0.0027 \)), seguido del Intel (\( 0.0028 \)) y el AMD 7950X (\( 0.0029 \)).  
+   - Si el presupuesto es limitado, el AMD 5900X sigue siendo una opción competitiva.
+
+3. **Eficiencia/Productividad por Núcleo**:  
+   - El **AMD 7950X** lidera en eficiencia por núcleo (\( 0.110 \)), gracias a sus 16 núcleos y alto speedup.  
+   - Recomendado para aplicaciones que escalan bien con paralelismo
+
+4. **Consideraciones Adicionales**:  
+   - El **Intel i5-13600K** es una opción balanceada: menor precio que el AMD 7950X y rendimiento aceptable para usuarios que no requieren máxima velocidad.  
+   - Los tiempos pueden variar según RAM, disco NVMe y versión del compilador (ej: GCC vs Clang).
