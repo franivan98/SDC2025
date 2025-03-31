@@ -116,7 +116,7 @@ A continuación se presentan los resultados obtenidos al medir el tiempo de comp
 ## ¿Y el **AMD Ryzen 9 7950X 16-Core**?
 
 #### Imagen de Referencia
-![Resultados de Compilación del Kernel](images/AMD-Ryzen-9-7950X-16-Core.PGN)  
+![Resultados de Compilación del Kernel](images/AMD-Ryzen-9-7950X-16-Core.PNG)  
 *Descripción de la imagen: Tabla con el tiempo de compilación del Ryzen 9 7950X.*
 
 #### Datos del Nuevo Procesador:
