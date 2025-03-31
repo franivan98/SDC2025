@@ -55,6 +55,7 @@ Se centra en proyectos de software afines a la carrera, haciendo uso de interacc
 | Ejecutar procesos en paralelo           | lmbench                            | Analiza la latencia de creación de procesos y cambios de contexto. |
 
 
+
 ---
 
 ### Perfil de Lenox:
