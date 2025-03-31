@@ -89,11 +89,26 @@ Se centra en proyectos de software vinculados a la carrera, incluyendo interacci
 ---
 
   ### Perfil de Guada:
-
+  Este perfil es mas universitario mas que nada. Edicion de documentos, uso diario de redes sociales y uso de simuladores de circuitos electronicos como multisim.
   ### Benchmarks más útiles para este perfil:
   #### **1. Benchmarks Específicos:**
+| Benchmark     | Tipo de Medición                          | Relevancia para Guada |
+|--------------|----------------------------------------|----------------------|
+| SPEC CPU     | Rendimiento general en cargas reales  | Alto (Simulaciones, edición de documentos, compilación) |
+| Whetstone    | Cálculo de punto flotante             | Alto (Simulación de circuitos en Multisim) |
+| LINPACK      | Resolución de ecuaciones numéricas    | Medio (Tareas matemáticas avanzadas) |
+| STREAM       | Ancho de banda de memoria             | Medio (Manejo de datos en simulaciones) |
+| lmbench      | Latencias de memoria y rendimiento SO | Alto (Navegación, multitarea, interacción con el SO) |
+| Dhrystone    | Operaciones con enteros               | Medio (Compilación y ejecución de código) |
 
   #### **2. Tabla de Tareas vs. Benchmarks:**
+| Tarea                                    | Benchmark Más Representativo | Motivo |
+|------------------------------------------|----------------------------|--------------------------------------------------|
+| Simulación de circuitos (Multisim)      | Whetstone                   | Evalúa cálculos de punto flotante, clave en simulaciones eléctricas |
+| Edición de documentos y PDFs            | SPEC CPU                    | Mide el rendimiento en cargas de trabajo generales |
+| Navegación web y multitarea             | lmbench                     | Mide latencias de memoria y eficiencia del sistema operativo |
+| Programación y compilación (C, Python)  | SPEC CPU / Dhrystone        | Evalúan rendimiento en operaciones con enteros y ejecución de código |
+| Cálculos en Excel y MATLAB              | LINPACK / STREAM            | Miden capacidad de procesamiento matemático y ancho de banda de memoria |
 
 ---
 
