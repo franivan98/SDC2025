@@ -2,6 +2,8 @@
 
 Este trabajo práctico muestra cómo utilizar ensamblador x86 de 32 bits en conjunto con código en C, y cómo integrarlo en una aplicación Python con interfaz gráfica para visualizar el índice de GINI de distintos países.
 
+Tambien se hace un Analisis del Stack usando gdb. Esto esta explicado en el documento `Analisis_stack.md`
+
 ---
 
 ## 📌 ¿Qué hace el programa?
