@@ -17,4 +17,4 @@ float_to_int:
     mov esp, ebp
     pop ebp
     ret
-
+section .note.GNU-stack noalloc noexec nowrite progbits
