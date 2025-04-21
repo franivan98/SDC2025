@@ -27,13 +27,19 @@ Tambien se hace un Analisis del Stack usando gdb. Esto esta explicado en el docu
 
 ```
 .
-├── gini_last.py           # Script principal con la GUI y lógica de ejecución
-├── api_gini.py            # Código que consulta la API del Banco Mundial
-├── procesamiento.c        # Función en C que llama al ASM
-├── float_int.asm          # Función en ensamblador 32 bits
-├── libprocesamiento.so    # Librería compartida compilada en 32 bits
-├── Makefile               # Automatiza la compilación de C y ASM
-├── README.md              # Este archivo 
+├── README.md                      # Documentación del proyecto
+├── Makefile                       # Automatiza la compilación de C y ASM
+├── lib/
+│   └── libprocesamiento.so        # Librería compartida compilada en 32 bits
+└── src/
+    ├── python/
+    │   ├── gini_last.py           # Script principal con la GUI y lógica de ejecución
+    │   └── api_gini.py            # Código que consulta la API del Banco Mundial
+    ├── c/
+    │   └── procesamiento.c        # Función en C que llama a la función en ensamblador
+    └── assembler/
+        └── float_int.asm          # Función en ensamblador 32 bits
+
 ```
 
 ---
