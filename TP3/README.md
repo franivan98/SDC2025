@@ -3,7 +3,7 @@
 ## Introducción
 
 Este proyecto tiene como objetivo demostrar la transición del modo real al modo protegido en la arquitectura x86.  
-El trabajo práctico fue realizado sobre un entorno Linux, utilizando ensamblador GAS (sintaxis AT&T) y herramientas como `as`, `ld`, `objcopy` y `qemu-system-i386`.
+El trabajo práctico fue realizado sobre un entorno Linux.
 
 La implementación incluye:
 - Creación de una imagen de arranque (`main.img`).
@@ -85,9 +85,9 @@ gdb
 
 Imágenes capturadas durante la ejecución del entorno:
 
-- ![Image 1](../Images/image1.png)
-- ![Image 2](../Images/image2.png)
-- ![Image 3](../Images/image3.png)
+- ![Image 1](./Images/image1.png)
+- ![Image 2](./Images/image2.png)
+- ![Image 3](./Images/image3.png)
 
 ---
 
@@ -118,11 +118,6 @@ Se utiliza para generar un archivo binario puro (sin cabeceras de formato ELF u 
 
 ---
 
-## Licencia
-
-Este proyecto está bajo la licencia Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
-
----
 
 ## Referencias
 
