@@ -72,7 +72,7 @@ qemu-system-i386 -fda main.img -boot a -s -S -monitor stdio
 ```
 En otra terminal:
 ```bash
-gdb
+gdb gdb activate_protected_mode.elf
 (gdb) target remote localhost:1234
 (gdb) set architecture i8086
 (gdb) break *0x7c00
@@ -90,6 +90,55 @@ Imágenes capturadas durante la ejecución del entorno:
 - ![Image 3](./Images/image3.png)
 
 ---
+
+### Imágenes capturadas del proceso de Depuración con GDB y llamadas a BIOS
+
+1. Luego de arrancar QEMU con el stub de GDB, lanzamos GDB sobre el ELF y ponemos un break:
+
+![](./Images/InicioGDB.png)
+
+2. Continuar hasta mov %cr0, %eax
+
+![](./Images/mov-cr0-eax.png)
+En 0x7c05, CR0 = 0x10 (solo ET=1), confirmando que aún estamos en modo real.
+
+3. Preparar EAX = CR0 | 1
+
+![](./Images/EAX%20=%20CR0%20|%201.png)
+Antes de mov %eax,%cr0, EAX = 0x11, listo para activar PE.
+
+4. Ejecutar mov %eax,%cr0 + ljmp
+
+![](./Images//mov-eax-cr0+ljmp.png)
+Tras ljmp, CR0 = 0x11 (PE=1) y CS = 0x08, confirmando modo protegido activo.
+
+5. Recarga de segmentos de datos
+
+![](./Images/segmentos%20de%20datos.png)
+DS, ES, FS, GS y SS recargados con el selector 0x10.
+
+6. Configurar stack y preservación de registros
+
+![](./Images/Configurar%20stack%20y%20preservación%20de%20registros.png)
+Se monta un nuevo stack en 0x7000 y se preservan registros para la impresión.
+
+7. Impresión en VGA
+Comprobamos punteros y volvamos memoria de vídeo
+
+![](./Images//Impresión%20en%20VGA.png)
+ECX apunta a “message” y EDX a 0xB8000.
+Memoria 0xB8000 mostrando ASCII + atributo, confirmando la impresión.
+
+8. Conclusión
+Con esta depuración hemos verificado:
+- Preparación de la GDT con lgdt.
+- Activación de PE en CR0 y transición a modo protegido.
+- Recarga de segmentos (CS, DS, ES, FS, GS, SS).
+- Configuración de stack y preservación de registros.
+- Impresión en memoria de vídeo desde modo protegido.
+
+
+
 
 ## Respuestas teóricas
 
@@ -117,6 +166,54 @@ Ambas herramientas permiten verificar dónde se colocó el programa en la imagen
 Se utiliza para generar un archivo binario puro (sin cabeceras de formato ELF u otros) que pueda ser cargado directamente por el BIOS o un emulador.
 
 ---
+
+## Prueba en Hardware Real
+
+1. Limpiar pendrive:
+
+```bash
+sudo dd if=/dev/zero of=/dev/sdb bs=1M
+```
+2. Grabar main.img:
+
+```bash
+sudo dd if=main.img of=/dev/sdb bs=512 conv=notrunc
+sudo sync
+```
+
+3. Verificar firma 0x55AA:
+```bash
+sudo hexdump -C -n 512 /dev/sdb | tail -n 2
+```
+
+4. Para probarlo en Hardware real primero debemos confirgurar el mismo 
+- 4a
+![](./Images/Configuracion.jpeg)
+Entramos a la configuracion de la BIOS
+
+- 4b
+![](./Images/BootMode.jpeg)
+Configuramos el Boot Mode en Legacy
+
+5. Iniciamos desde el dispositivo USB
+![](./Images/InicioPorUSB.jpeg)
+
+Luego:
+
+```markdown
+[Arranque desde Pendrive](./Images/ArranquePendrive.mp4)
+```
+
+Arranque real desde pendrive, mensaje impreso y CPU reiniciado tras finalizar.
+
+**Con esto se demostro:**
+- La transición de modo real a modo protegido en x86 mediante:
+   - Configuración de la GDT y activación de PE en CR0.
+   - Salto a código de 32 bits y recarga de segmentos.
+   - Impresión en VGA.
+
+
+
 
 
 ## Referencias
