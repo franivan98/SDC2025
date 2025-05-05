@@ -212,6 +212,20 @@ Arranque real desde pendrive, mensaje impreso y CPU reiniciado tras finalizar.
    - Salto a código de 32 bits y recarga de segmentos.
    - Impresión en VGA.
 
+## Ultimo desafio
+### preguntas teoricas:
+1) **¿Qué sucede al intentar escribir en un segmento de solo lectura?**
+* Si intentamos escribir en un segmento de solo lectura, el procesador generara una excepcion de proteccion de memoria. Esto es parte del modo protegido que impide el acceso no autorizado a memoria de solo lectura o solo de ejecucion. 
+
+2) **¿Qué debería suceder a continuación?**
+* Segun la teoria del modo protegido, cuando se intenta escribir en un segmento de solo lectura, se genera una excepción de acceso a memoria (generalmente 0x0D, que indica "General Protection Fault"). El sistema operativo o el entorno de ejecución debería capturar esta excepción y gestionarla adecuadamente.
+
+3) **¿Con qué valor se cargan los registros de segmento en modo protegido? ¿Por qué?**
+
+* En el modo protegido, los registros de segmento, como CS, DS, SS, se cargan con un valor que hace referencia a un descriptor de segmento específico en la GDT. En este desafio, el valor de CS se carga con el selector del segmento de código, mientras que DS se carga con el selector del segmento de datos.
+Los valores de los registros de segmento determinan los permisos y la base de cada segmento. En el caso del segmento de datos, configuramos los permisos para que sea solo lectura, lo que evita que se escriba en él.
+
+### Verificacion con gdb
 
 
 
