@@ -19,8 +19,4 @@ Cada trabajo práctico incluye su documentación correspondiente, código fuente
 - Git
 - Herramientas de desarrollo (gcc, make, etc.)
 
-## Cómo clonar este repositorio
-
-```bash
-git clone https://github.com/usuario/SDC2025.git
 
