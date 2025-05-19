@@ -212,21 +212,143 @@ Arranque real desde pendrive, mensaje impreso y CPU reiniciado tras finalizar.
    - Salto a código de 32 bits y recarga de segmentos.
    - Impresión en VGA.
 
-## Ultimo desafio
-### preguntas teoricas:
-1) **¿Qué sucede al intentar escribir en un segmento de solo lectura?**
-* Si intentamos escribir en un segmento de solo lectura, el procesador generara una excepcion de proteccion de memoria. Esto es parte del modo protegido que impide el acceso no autorizado a memoria de solo lectura o solo de ejecucion. 
+## Desafío Final: Modo Protegido
 
-2) **¿Qué debería suceder a continuación?**
-* Segun la teoria del modo protegido, cuando se intenta escribir en un segmento de solo lectura, se genera una excepción de acceso a memoria (generalmente 0x0D, que indica "General Protection Fault"). El sistema operativo o el entorno de ejecución debería capturar esta excepción y gestionarla adecuadamente.
+Este desafío tiene como objetivo crear un programa en ensamblador que cambie al modo protegido, defina dos segmentos de memoria distintos (código y datos) y modifique los permisos del segmento de datos para observar el comportamiento al intentar escribir.
 
-3) **¿Con qué valor se cargan los registros de segmento en modo protegido? ¿Por qué?**
+---
 
-* En el modo protegido, los registros de segmento, como CS, DS, SS, se cargan con un valor que hace referencia a un descriptor de segmento específico en la GDT. En este desafio, el valor de CS se carga con el selector del segmento de código, mientras que DS se carga con el selector del segmento de datos.
+### Paso 1: Entender el modo protegido
+
+El modo protegido permite:
+- Uso de segmentación avanzada con protección por privilegios y permisos.
+- Acceso a más de 1MB de memoria (limitación del modo real).
+- Control de acceso a memoria mediante la GDT (Global Descriptor Table).
+
+---
+
+### Paso 2: Crear el archivo main.asm
+
+Escribe un archivo llamado main.asm con lo siguiente:
+
+```asm
+BITS 16
+org 0x7c00
+
+start:
+    cli
+    xor ax, ax
+    mov ds, ax
+
+    lgdt [gdt_descriptor]
+
+    ; Habilitar modo protegido
+    mov eax, cr0
+    or eax, 1
+    mov cr0, eax
+
+    jmp 0x08:protected_mode
+
+[BITS 32]
+protected_mode:
+    mov ax, 0x10
+    mov ds, ax
+    ; Intentar escribir en segmento de solo lectura (offset 0x0)
+    mov dword [0x0], 0x12345678 ; Dirección lineal: 0x00200000 (base) + 0x0
+
+hang:
+    jmp hang
+
+; GDT Corregida
+gdt_start:
+    ; Null descriptor
+    dd 0x00000000
+    dd 0x00000000
+
+    ; Código: base 0x7C00, límite 0xFFFFF (4GB), ejec/lectura
+    dw 0xFFFF       ; Límite 0-15
+    dw 0x7C00       ; Base 0-15
+    db 0x00         ; Base 16-23
+    db 0x9A         ; Acceso: Presente, Ring 0, Código, Lectura
+    db 0xCF         ; Límite 16-19 (0xF), Flags (G=1, D/B=1)
+    db 0x00         ; Base 24-31
+
+    ; Datos: base 0x00200000, límite 0xFFF (4KB), solo lectura
+    dw 0x0FFF       ; Límite 0-15
+    dw 0x0000       ; Base 0-15
+    db 0x20         ; Base 16-23
+    db 0x90         ; Acceso: Presente, Ring 0, Datos, Solo lectura
+    db 0x00         ; Límite 16-19 (0x0), Flags (G=0)
+    db 0x00         ; Base 24-31
+
+gdt_end:
+
+gdt_descriptor:
+    dw gdt_end - gdt_start - 1
+    dd gdt_start
+
+times 510-($-$$) db 0
+dw 0xAA55
+```
+
+Nota:
+   - El descriptor de código (selector 0x08) permite ejecución/lectura.
+
+   - El descriptor de datos (selector 0x10) es solo lectura.
+
+---
+
+### Paso 3: Compilar y ejecutar
+Compilar:
+```bash
+nasm -f bin -o pmode.img main.S
+```
+Probar en QEMU:
+```bash
+qemu-system-x86_64 -hda pmode.img -s -S
+```
+- -s inicia un servidor GDB en el puerto 1234
+- -S pausa la ejecución al arranque
+
+---
+
+### Paso 4: Verificar con GDB
+Conecta con gdb y examina registros y memoria:
+```bash
+gdb
+(gdb) target remote :1234
+(gdb) c                    # Continúa ejecución
+```
+
+### Preguntas teoricas:
+
+**¿Qué sucede al intentar escribir en un segmento de solo lectura?**
+Si intentamos escribir en un segmento de solo lectura, el procesador generara una excepcion de proteccion de memoria. Esto es parte del modo protegido que impide el acceso no autorizado a memoria de solo lectura o solo de ejecucion. 
+
+**¿Qué debería suceder a continuación?**
+Segun la teoria del modo protegido, cuando se intenta escribir en un segmento de solo lectura, se genera una excepción de acceso a memoria (generalmente 0x0D, que indica "General Protection Fault"). El sistema operativo o el entorno de ejecución debería capturar esta excepción y gestionarla adecuadamente.
+
+**¿Con qué valor se cargan los registros de segmento en modo protegido? ¿Por qué?**
+
+En el modo protegido, los registros de segmento, como CS, DS, SS, se cargan con un valor que hace referencia a un descriptor de segmento específico en la GDT. En este desafio, el valor de CS se carga con el selector del segmento de código, mientras que DS se carga con el selector del segmento de datos.
 Los valores de los registros de segmento determinan los permisos y la base de cada segmento. En el caso del segmento de datos, configuramos los permisos para que sea solo lectura, lo que evita que se escriba en él.
 
-### Verificacion con gdb
+# Conclusión
 
+Este desafío nos permitió explorar en profundidad el funcionamiento del modo protegido en la arquitectura x86. A través de la implementación de un pequeño programa en ensamblador, logramos:
+
+- Cambiar de modo real a modo protegido.
+- Definir una GDT con dos descriptores: uno para código y otro para datos, cada uno con bases y límites distintos.
+- Configurar el descriptor de datos con permisos de solo lectura.
+- Intentar escribir en una dirección válida dentro del segmento de datos para provocar una violación de acceso.
+
+Como resultado, el sistema generó una excepción (#GP - General Protection Fault) al detectar la escritura no autorizada. Al no definirse una IDT con manejadores, esto derivó en un triple fault, provocando el reinicio de QEMU, lo cual confirma el correcto funcionamiento de los mecanismos de protección del modo protegido.
+
+También observamos que los registros de segmento, en este modo, toman valores de selectores que apuntan a descriptores definidos en la GDT, lo que permite controlar privilegios, acceso y segmentación de manera precisa.
+
+Por otro lado, se intentó ejecutar los programas generados en computadoras físicas reales mediante el uso de imágenes booteables grabadas en USB. Sin embargo, salvo por el ejemplo que simplemente entra en modo protegido e imprime un texto desde memoria de video, la mayoría de los casos no funcionaron correctamente en hardware.
+
+En resumen, se cumplió el objetivo del desafío al lograr una implementación funcional de modo protegido con segmentación diferenciada y protección efectiva, aunque su ejecución fue limitada mayormente al entorno virtualizado proporcionado por QEMU.
 
 
 
