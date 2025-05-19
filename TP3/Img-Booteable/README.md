@@ -189,3 +189,7 @@ sudo dd if=main.img of=/dev/sdb bs=512 count=1
 3. Inserta el pendrive en la PC destino, accede al menú de arranque (Boot Menu o BIOS/UEFI) y selecciona el dispositivo USB como medio de arranque.
 
 4. Si todo es correcto y el hardware es compatible con BIOS (no solo UEFI), verás impreso en pantalla: "hello world"
+
+
+Nota: Como no se pudo correr la imagen en hardware real lo implementamos en QEMU donde funciono correctamente:
+![](./images/HelloWord-QEMU.png)
