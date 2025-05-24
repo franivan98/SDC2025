@@ -9,7 +9,7 @@ En este espacio se encuentran todos los **trabajos prácticos** de la materia, d
 - TP1
 - TP2
 - TP3
-- (y más a medida que avanza la cursada)
+- TP4
 
 Cada trabajo práctico incluye su documentación correspondiente, código fuente y archivos adicionales necesarios para su ejecución.
 
