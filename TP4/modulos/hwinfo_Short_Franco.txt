@@ -1,0 +1,108 @@
+cpu:
+                       AMD Ryzen 7 7435HS, 400 MHz
+                       AMD Ryzen 7 7435HS, 1306 MHz
+                       AMD Ryzen 7 7435HS, 2355 MHz
+                       AMD Ryzen 7 7435HS, 2519 MHz
+                       AMD Ryzen 7 7435HS, 1383 MHz
+                       AMD Ryzen 7 7435HS, 400 MHz
+                       AMD Ryzen 7 7435HS, 1307 MHz
+                       AMD Ryzen 7 7435HS, 400 MHz
+                       AMD Ryzen 7 7435HS, 1307 MHz
+                       AMD Ryzen 7 7435HS, 400 MHz
+                       AMD Ryzen 7 7435HS, 1306 MHz
+                       AMD Ryzen 7 7435HS, 1306 MHz
+                       AMD Ryzen 7 7435HS, 400 MHz
+                       AMD Ryzen 7 7435HS, 1305 MHz
+                       AMD Ryzen 7 7435HS, 2941 MHz
+                       AMD Ryzen 7 7435HS, 400 MHz
+keyboard:
+  /dev/input/event17   Integrated Technology Express ITE Device(8176)
+  /dev/input/event10   Microdia Redragon Mitra RGB Keyboard
+  /dev/input/event2    AT Translated Set 2 keyboard
+mouse:
+  /dev/input/event15   Microdia Redragon Mitra RGB Keyboard
+  /dev/input/mice      Logitech G203 LIGHTSYNC Gaming Mouse
+  /dev/input/mice      ELAN06FA:00 04F3:327E Mouse
+  /dev/input/mice      ELAN06FA:00 04F3:327E Touchpad
+monitor:
+                       L23
+                       CSOT T3 LCD Monitor
+graphics card:
+                       nVidia VGA compatible controller
+sound:
+                       AMD Family 17h (Models 10h-1fh) HD Audio Controller
+                       nVidia Audio device
+storage:
+                       Micron Non-Volatile memory controller
+network:
+  wlo1                 MEDIATEK WLAN controller
+  enp2s0               Realtek RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
+network interface:
+  wlo1                 Ethernet network interface
+  enp2s0               Ethernet network interface
+  lo                   Loopback network interface
+disk:
+  /dev/nvme0n1         Micron Disk
+partition:
+  /dev/nvme0n1p1       Partition
+  /dev/nvme0n1p2       Partition
+  /dev/nvme0n1p3       Partition
+  /dev/nvme0n1p4       Partition
+  /dev/nvme0n1p5       Partition
+  /dev/nvme0n1p6       Partition
+usb controller:
+                       AMD USB Controller
+                       AMD USB Controller
+                       AMD USB Controller
+                       AMD USB Controller
+                       AMD USB Controller
+bios:
+                       BIOS
+bridge:
+                       AMD Host bridge
+                       AMD Host bridge
+                       AMD Host bridge
+                       AMD Host bridge
+                       AMD PCI bridge
+                       AMD Host bridge
+                       AMD FCH LPC Bridge
+                       AMD PCI bridge
+                       AMD PCI bridge
+                       AMD Host bridge
+                       AMD Host bridge
+                       AMD PCI bridge
+                       AMD Host bridge
+                       AMD Host bridge
+                       AMD Host bridge
+                       AMD PCI bridge
+                       AMD Host bridge
+                       AMD PCI bridge
+                       AMD Host bridge
+                       AMD Host bridge
+                       AMD Host bridge
+hub:
+                       Linux Foundation 3.0 root hub
+                       Linux Foundation 2.0 root hub
+                       Linux Foundation 2.0 root hub
+                       Linux Foundation 3.0 root hub
+                       Linux Foundation 3.0 root hub
+                       Linux Foundation 3.0 root hub
+                       Linux Foundation 2.0 root hub
+                       Linux Foundation 2.0 root hub
+                       Linux Foundation 2.0 root hub
+                       Linux Foundation 3.0 root hub
+memory:
+                       Main Memory
+unknown:
+                       FPU
+                       DMA controller
+                       PIC
+                       Keyboard controller
+                       AMD IOMMU
+                       AMD VanGogh PSP/CCP
+                       ATI Non-Essential Instrumentation
+                       AMD FCH SMBus Controller
+                       AMD Raven/Raven2/FireFlight/Renoir Audio Processor
+                       Foxconn / Hon Hai Wireless_Device
+                       IMC Networks Integrated Camera
+  /dev/input/event9    Logitech G203 LIGHTSYNC Gaming Mouse

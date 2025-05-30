@@ -1,0 +1,9 @@
+filename:       /home/franivan98/Desktop/SistemasDeComputacion/tps/SDC2025/TP4/code/kenel-modules/part1/module/mimodulo.ko
+author:         Catedra de SdeC
+description:    Primer modulo ejemplo
+license:        GPL
+srcversion:     C6390D617B2101FB1B600A9
+depends:        
+retpoline:      Y
+name:           mimodulo
+vermagic:       6.11.0-26-generic SMP preempt mod_unload modversions 

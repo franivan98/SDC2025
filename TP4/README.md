@@ -189,14 +189,10 @@ La salida de este comando es la siguiente:
 Esto generará un archivo `.deb` que se instalará en tu sistema y que luego podés remover con:
 
 ```bash
-dpkg -r hello-world
+sudo dpkg -r hello-world
 ```
  
 [![](./images/6.png)]()
-
-
-
-Luego se revisa la bibliografía para ver como se puede mejorar la seguridad del kernel, concretamente: evitando cargar módulos que no estén firmados.
 
 
 ## Seguridad en los Módulos del Kernel
@@ -211,7 +207,7 @@ Firmar un módulo permite verificar que no ha sido alterado desde que fue creado
 
 1. **Crear un certificado SSL:**
 
-Utilizá OpenSSL y un archivo `.cnf` que describe los atributos del certificado. Ejemplo básico:
+Usá OpenSSL y un archivo `.cnf` que describe los atributos del certificado. Ejemplo básico:
 
 ```ini
 [ req ]
@@ -259,8 +255,6 @@ sudo /usr/src/linux-headers-$(uname -r)/scripts/sign-file sha256 MOK.priv MOK.de
 modinfo mimodulo.ko
 ```
 
-Deberías ver una línea indicando que el módulo está firmado.
-
 ### Medidas adicionales de seguridad
 
 Firmar módulos es sólo una parte. Algunas estrategias extra para fortalecer la seguridad del kernel incluyen:
@@ -273,5 +267,70 @@ Firmar módulos es sólo una parte. Algunas estrategias extra para fortalecer la
 
 ---
 
-Implementar estas medidas no solo mejora la seguridad general del sistema, sino que también ayuda a cumplir con estándares profesionales en entornos donde la confiabilidad del sistema operativo es esencial.
+# DESAFIO #2
+
+Vamos a comparar un modulo de kernel con nuestro modulo y vamos a identificar las diferencias.
+
+## ¿Qué diferencias se pueden observar entre los dos modinfo ? 
+
+```bash
+modinfo mimodulo.ko > modInfo/mimoduloInfo.txt
+modinfo /lib/modules/$(uname -r)/kernel/crypto/des_generic.ko.zst > modInfo/genericInfo.txt
+```
+Los archivos los guardamos en `module/modInfo`.
+
+[![](./images/modinfoComp.png)]()
+
+Se puede ver que `mimodulo.ko` es un ejemplo sencillo sin funcionalidades reales, sin dependencias ni firma digital. No esta comprimido ni forma parte de un arbol oficial de kernel.
+
+En cambio `des_generic.ko.zst`es un modulo oficial del kernel ubicado en `lib/modules/`, implementa cifrado DES/3DES, tiene dependencias, esta comprimido, firmado digitalmente y marcado como parte del arbol del kernel.
+
+## ¿Qué divers/modulos estan cargados en sus propias pc?
+
+vamos a trabajar en el directorio `TP4/modulos`.
+Aqui van a estar cargados 3 archivos con los modulos cargados en cada pc.
+
+# (FALTA COMPLETAR. CARGUEN SUS MODULOS CON ESTO: `lsmod > PC_nombre_modulos.txt`)
+
+## ¿cuales no están cargados pero están disponibles? que pasa cuando el driver de un dispositivo no está disponible. 
+
+Para poder ver todos los modulos disponibles de nuestro sistema, vamos a usar el siguiente comando:
+
+```bash
+find /lib/modules/$(uname -r)/kernel -type f -name "*.ko*" > PC_Franco_modulos_disponibles.txt
+```
+si abrimos el archivo, vamos a ver que tenemos disponibles un total de 6589 modulos, como drivers para camaras, controladores de red, sonido, etc. Cargados actualmente tenemos 158, como pudimos ver en el item anterior.
+
+[![](./images/modDisponibles.png)]()
+
+Si un driver o modulo no esta disponible en el sistema (ni cargado ni instalado), el hardware correspondiente no funcionará. En estos casos, el sistema puede mostrar errores en `dmesg`, `journalctl`, o el hardware directamente no aparecera en herramientas como `lspci`, `lsusb`o `ifconfig`.
+
+Ejemplos de consecuencias:
+* Una tarjeta wifi no funcionara si falta su modulo.
+* UN puerto USB 3.0 puede no tener la velocidad maxima si falta el modulo `xhci_hcd`.
+* UN sistema virtualizado no podra acceder al disco si falta el driver de almacenamiento virtual.
+
+## Correr hwinfo en una pc real con hw real y agregar la url de la información de hw en el reporte. 
+
+hwinfo es una herramienta que permite detectar y mostrar informacion detallada del hardware de una computadora. Escanea todos los componentes del sistema: CPU, memoria, discos, tarjetas, graficas, red, sonido, etc.
+
+para usarlo, primero lo vamos a instalar:
+```bash
+sudo apt install hwinfo
+```
+
+Para ver un resumen rapido del sistema podemos usar el siguiente comando:
+
+```bash
+hwinfo --short
+```
+[![](./images/hwinfo.png)]()
+
+y por ultimo, para guardar toda nuestra informacion usaremos lo siguiente (seguimos en el directorio modulos)
+
+```bash
+hwinfo > hwinfo_Franco.txt
+```
+
+
 

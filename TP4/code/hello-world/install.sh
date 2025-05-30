@@ -1,1 +1,2 @@
-cp hello /usr/local/bin/hello
+#!/bin/bash
+cp hello /usr/local/bin/
