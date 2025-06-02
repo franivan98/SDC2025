@@ -290,8 +290,6 @@ En cambio `des_generic.ko.zst`es un modulo oficial del kernel ubicado en `lib/mo
 vamos a trabajar en el directorio `TP4/modulos`.
 Aqui van a estar cargados 3 archivos con los modulos cargados en cada pc.
 
-# (FALTA COMPLETAR. CARGUEN SUS MODULOS CON ESTO: `lsmod > PC_nombre_modulos.txt`)
-
 ## ¿cuales no están cargados pero están disponibles? que pasa cuando el driver de un dispositivo no está disponible. 
 
 Para poder ver todos los modulos disponibles de nuestro sistema, vamos a usar el siguiente comando:
@@ -407,7 +405,7 @@ Para “ver” las syscalls ejecutadas por un programa de usuario, la herramient
 #### Pasos:
 
    1. **Escribir y compilar un simple “Hello World”**
-   ```init
+   ```c
       /* hello.c */
    #include <stdio.h>
    int main(void) {
