@@ -13,8 +13,10 @@
 #define GPIO_SIG0 23 // Definición del GPIO para la señal 0
 #define GPIO_SIG1 24 // Definición del GPIO para la señal 1
 
+#define MESSAGE_SIZE 32 // Tamaño del mensaje para lectura/escritura
+
 static dev_t dev_num; // Número de dispositivo
-static struct cdev c_dev; // Estructura del dispositivo de caracteres
+static struct cdev cdd_dev; // Estructura del dispositivo de caracteres
 static struct class *cdd_class = NULL; // Clase del dispositivo
 
 static struct timer_list signal_timer; // Temporizador para manejar las señales
@@ -46,15 +48,32 @@ static int cdd_release(struct inode *inode, struct file *file){
 
 static ssize_t cdd_read(struct file *file, char __user *buffer, size_t len, loff_t *offset){
     
-    //TODO: Implementar la lectura de las señales GPIO
+    char msg[MESSAGE_SIZE];
+    int value=signal_value[current_signal];
+    int msg_len= snprintf(msg, MESSAGE_SIZE, "Signal %d: %d\n", current_signal, value);
 
-    ssize_t ret = 0;
-    return ret; // Retornar el número de bytes leídos
+    if(*offset >= msg_len) {
+        return 0; // Fin del archivo
+    }
+    if(copy_to_user(buffer, msg + *offset, msg_len - *offset)) {
+        return -EFAULT; // Error al copiar al usuario
+    }
+    *offset += msg_len - *offset; // Actualizar el offset
+    return msg_len - *offset; // Retornar el número de bytes leídos
 }
 
 static ssize_t cdd_write(struct file *file, const char __user *buffer, size_t len, loff_t *offset){
-    // TODO: Implementar la escritura de las señales GPIO
-    return 0;
+    char kbuf[2];
+    if(len<1 || copy_from_user(kbuf, buffer, 1)) {
+        return -EFAULT; // Error al copiar del usuario
+    }
+    if(kbuf[0] == '0' || kbuf[0] == '1') {
+        current_signal = kbuf[0] - '0'; // Actualizar la señal actual
+        printk(KERN_INFO "CDD: Cambiando a señal %d\n", current_signal);
+    } else {
+        printk(KERN_WARNING "CDD: Señal invalida.\n");
+    }
+    return len; // Retornar el número de bytes escritos
 }
 
 static struct file_operations fops = {
@@ -66,10 +85,71 @@ static struct file_operations fops = {
 };
 
 static int __init cdd_init(void){
+    int ret;
+
+    ret=gpio_request(GPIO_SIG0,"sig0");
+    if(ret) {
+        printk(KERN_ERR "CDD: Error al solicitar GPIO %d.\n", GPIO_SIG0);
+        return ret; // Retorna error si no se pudo solicitar el GPIO
+    }
+    ret=gpio_request(GPIO_SIG1,"sig1");
+    if(ret) {
+        printk(KERN_ERR "CDD: Error al solicitar GPIO %d.\n", GPIO_SIG1);
+        gpio_free(GPIO_SIG0); // Liberar el GPIO anterior
+        return ret; // Retorna error si no se pudo solicitar el GPIO
+    }
+
+    // Configurar los GPIO como entradas
+    gpio_direction_input(GPIO_SIG0);
+    gpio_direction_input(GPIO_SIG1);
+
+    //Registrar el dispositivo de caracteres
+    ret=alloc_chrdev_region(&dev_num, 0, 1, DEVICE_NAME);
+    if(ret < 0) {
+        printk(KERN_ERR "CDD: No se pudo registrar el dispositivo.\n");
+        gpio_free(GPIO_SIG0);
+        gpio_free(GPIO_SIG1);
+        return ret; // Retorna error si no se pudo registrar el dispositivo
+    }
+    cdev_init(&cdd_dev, &fops);
+    cdd_dev.owner = THIS_MODULE;
+    ret = cdev_add(&cdd_dev, dev_num, 1);
+    if(ret < 0) {
+        printk(KERN_ERR "CDD: No se pudo agregar el dispositivo de caracteres.\n");
+        unregister_chrdev_region(dev_num, 1);
+        gpio_free(GPIO_SIG0);
+        gpio_free(GPIO_SIG1);
+        return ret; // Retorna error si no se pudo agregar el dispositivo
+    }
+    cdd_class = class_create(CLASS_NAME);
+    if(IS_ERR(cdd_class)) {
+        printk(KERN_ERR "CDD: No se pudo crear la clase del dispositivo.\n");
+        cdev_del(&cdd_dev);
+        unregister_chrdev_region(dev_num, 1);
+        gpio_free(GPIO_SIG0);
+        gpio_free(GPIO_SIG1);
+        return PTR_ERR(cdd_class); // Retorna error si no se pudo crear la clase
+    }
+    device_create(cdd_class, NULL, dev_num, NULL, DEVICE_NAME);
+
+    // Inicializar el temporizador
+    timer_setup(&signal_timer, timer_callback, 0);
+    mod_timer(&signal_timer, jiffies + msecs_to_jiffies(1000)); // Iniciar el temporizador para que se ejecute cada segundo
+    
     printk(KERN_INFO "CDD: Modulo Cargado.\n");
     return 0; // Retorna 0 si la carga fue exitosa
 }
 static void __exit cdd_exit(void){
+
+    del_timer_sync(&signal_timer); // Eliminar el temporizador
+    device_destroy(cdd_class, dev_num); // Destruir el dispositivo
+    class_destroy(cdd_class); // Destruir la clase del dispositivo
+    cdev_del(&cdd_dev); // Eliminar el dispositivo de caracteres
+    unregister_chrdev_region(dev_num, 1); // Desregistrar el dispositivo de caracteres
+
+    gpio_free(GPIO_SIG0); // Liberar el GPIO 0
+    gpio_free(GPIO_SIG1); // Liberar el GPIO 1
+
     printk(KERN_INFO "CDD: Modulo Descargado.\n");
 }
 
