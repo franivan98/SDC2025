@@ -58,6 +58,7 @@ El módulo del kernel desarrollado implementa un dispositivo de caracteres que e
 - Manejo de lectura: devuelve una línea de texto con el valor actual de la señal seleccionada
 
 **Estructura del driver**
+
 El driver utiliza las siguientes funciones clave del núcleo de Linux:
 - alloc_chrdev_region(), cdev_init(), cdev_add(): para registrar el dispositivo de caracteres.
 - class_create(), device_create(): para hacerlo visible en /dev/.
@@ -65,6 +66,7 @@ El driver utiliza las siguientes funciones clave del núcleo de Linux:
 - file_operations: define los callbacks .open, .release, .read y .write.
 
 **Simulación de señales**
+
 Dado que el entorno carece de GPIO físico (como ocurre en una Raspberry Pi), las señales se simulan así:
 ```bash
 signal_value[0] = jiffies % 2;
@@ -91,16 +93,16 @@ El driver también imprime información en el kernel log mediante printk, lo que
 En un entorno de producción o para estructuras de datos más complejas, se podría haber implementado ioctl o sysfs. Sin embargo, para este caso, la escritura de un solo carácter ('0' o '1') es suficiente
 
 ## Aplicación de usuario
+
 Para cumplir con la consigna de leer y graficar una de las dos señales en tiempo real desde espacio de usuario, se desarrolló una aplicación en Python 3 utilizando las librerías matplotlib, animation y Button para construir una interfaz gráfica.
 
  **Funcionalidad principal**
+
 La aplicación:
 - Permite al usuario seleccionar cuál de las dos señales sensar mediante dos botones (Señal 0 y Señal 1).
 - Realiza una lectura del valor actual de la señal seleccionada desde el dispositivo /dev/cdd_signal una vez por segundo.
 - Grafica el valor leído en tiempo real, acumulando una curva temporal de la señal elegida.
 - Al cambiar de señal, el gráfico se reinicia automáticamente, reiniciando el eje de tiempo y borrando la serie anterior.
-
-FOTOOO
 
 
 ## Pruebas realizadas
@@ -108,3 +110,47 @@ Se realizaron diversas pruebas manuales para validar el correcto funcionamiento 
 
  1. Carga y creación del dispositivo
 
+Comando:
+```bash
+sudo insmod cdd_driver.ko
+ls /dev/cdd_signal
+
+```
+
+ 2. Selección de señal desde espacio de usuario
+```bash
+echo 0 > /dev/cdd_signal
+cat /dev/cdd_signal
+```
+[![](./images/ModuloAgregado.png)]()
+
+3. Prueba de la app Python
+
+```bash
+python3 user.py
+```
+[![](./images/Señal0.png)]()
+[![](./images/Señal1.png)]()
+
+## Conclusion
+
+Durante el desarrollo de este trabajo práctico, se abordaron conceptos avanzados de programación en espacio de kernel y espacio de usuario en Linux. Si bien en principio la consigna parecía sencilla, en la práctica surgieron varios desafíos que requirieron investigación y adaptación, especialmente en lo referido al entorno de trabajo.
+
+- Dificultades encontradas
+  - Uno de los principales obstáculos fue la imposibilidad de contar con una Raspberry Pi física, tal como sugiere la consigna. Inicialmente se intentó emular GPIOs usando herramientas como QEMU, gpio-mockup y qemu-rpi-gpio, pero todos los enfoques resultaron muy inestables o imposibles de integrar completamente en un entorno virtual accesible.
+
+Finalmente, optamos por utilizar una máquina virtual (VirtualBox con Debian) y simular las señales directamente desde el kernel usando jiffies, lo que permitió cumplir todos los requisitos del TP sin hardware adicional.
+
+Cabe destacar que la búsqueda de soluciones llevó tiempo y frustración. Afortunadamente, encontramos una guía muy útil en esta página web: "https://raspberrytips.es/raspberry-pi-os-maquina-virtual/", que nos orientó para montar un entorno de trabajo compatible con herramientas básicas de desarrollo para Raspberry Pi OS dentro de VirtualBox. Esto fue clave para avanzar.
+
+- Evaluación general del trabajo
+A pesar de las dificultades, el TP permitió poner en práctica conocimientos fundamentales sobre:
+- Creación y registro de dispositivos de caracteres en Linux.
+- Manejo de estructuras del kernel (cdev, timer_list, file_operations).
+- Comunicación entre espacio de usuario y kernel mediante archivos especiales.
+- Desarrollo de interfaces gráficas simples para visualización de señales.
+- Sincronización de datos en tiempo real y diseño modular.
+
+El sistema desarrollado cumple todos los puntos solicitados en la consigna, incluyendo la visualización gráfica con selección de señales, reinicio automático del gráfico, y simulación correcta de señales digitales con periodo de 1 segundo.
+
+En definitiva, fue un trabajo desafiante, que nos obligó a pensar como desarrolladores de bajo nivel, a investigar nuevas herramientas y a buscar soluciones alternativas frente a las limitaciones del entorno.
